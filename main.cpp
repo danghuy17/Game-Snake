@@ -8,6 +8,7 @@
 #define Y0		1
 
 enum MOVE { LEFT = 'a', UP = 'w', RIGHT = 'd', DOWN = 's' };
+enum SPEED { ONE = 10, TWO = 20, THREE = 30, FOUR = 50, FIVE = 100 };
 void disableResizeWindow()
 {
 	HWND hWnd  = GetConsoleWindow();
@@ -43,6 +44,9 @@ void setColor(int background, int text)
 }
 void print(const Snake& s)
 {
+	setColor(7, 1);
+	setCursor(X_SIZE + 4, Y_SIZE / 2);
+	std::cout << "POINTS: " << s.point;
 	for (int i = 0; i < Y_SIZE; ++i)
 	{
 		setCursor(X0, Y0 + i);
@@ -122,9 +126,22 @@ void showScreen()
 }
 int main()
 {
-	setConsoleWindowSize(X_SIZE + 1, Y_SIZE + 1);
+	int n = 10, speed = 50;
+	setConsoleWindowSize(X_SIZE + 20, Y_SIZE + 1);
+	disableResizeWindow();
+	while (n < 1 ||n > 5)
+	{
+		std::cout << "ENTER SPEED(1-2-3-4-5): "; std::cin >> n;
+	}
+	if (n == 1) speed = ONE;
+	else if (n == 2) speed = TWO;
+	else if (n == 3) speed = THREE;
+	else if (n == 4) speed = FOUR;
+	else if (n == 5) speed = FIVE;
+	setConsoleWindowSize(X_SIZE + 20, Y_SIZE + 1);
 	disableResizeWindow();
 	showCursor();
 	showScreen();
-	startGame();
+	startGame(speed);
+	getch();
 }

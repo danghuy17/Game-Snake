@@ -9,9 +9,11 @@ public:
 	int point;
 	int x_head, y_head;
 	int x_head1, y_head1;
+	bool ca;
 public:
 	Snake()
 	{
+		ca = true;
 		point = 3;
 		for (int i = 0; i < X_SIZE; ++i)
 		{
@@ -59,6 +61,8 @@ bool Snake::eatPoint()
 	 	createPoint(); 
 	 	if(size[x_head + 1][y_head] == -1) size[x_head + 1][y_head1] = 0;
 	 	else if (size[x_head - 1][y_head] == -1) size[x_head - 1][y_head] = 0;
+	 	if(size[x_head1 + 1][y_head] == -1) size[x_head1 + 1][y_head1] = 0;
+	 	else if (size[x_head1 - 1][y_head] == -1) size[x_head1 - 1][y_head] = 0;
 	 	std::cout << char(7); return true; 
 	 }
 	return false;
@@ -83,28 +87,40 @@ void Snake::move()
 }
 bool Snake::moveRight()
 {
+	 ca = true;
 	++x_head;
 	x_head1 = x_head;
 	return endGame();
 }
 bool Snake::moveLeft()
 {
+	ca = true;
 	--x_head;
 	x_head1 = x_head;
 	return endGame();
 }
 bool Snake::moveUp()
 {
-	if (size[x_head - 1][y_head] != 0) x_head1 = x_head - 1;
-	else if (size[x_head + 1][y_head] != 0) x_head1 = x_head + 1;
+	if (size[x_head - 1][y_head] > 0) x_head1 = x_head - 1;
+	else if (size[x_head + 1][y_head] > 0) x_head1 = x_head + 1;
+	if (ca == true)
+	{
+		++size[x_head1][y_head1];
+		ca = false;
+	}
 	--y_head;
 	y_head1 = y_head;
 	return endGame();
 }
 bool Snake::moveDown()
 {
-	if (size[x_head - 1][y_head] != 0) x_head1 = x_head - 1;
-	else if (size[x_head + 1][y_head] != 0) x_head1 = x_head + 1;
+	if (size[x_head - 1][y_head] > 0) x_head1 = x_head - 1;
+	else if (size[x_head + 1][y_head] > 0) x_head1 = x_head + 1;
+	if (ca == true)
+	{
+		++size[x_head1][y_head1];
+		ca = false;
+	}	
 	++y_head;
 	y_head1 = y_head;
 	return endGame();
